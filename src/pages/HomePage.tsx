@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Form } from 'react-bootstrap';
+import { useGlobal } from 'reactn';
+import { Form, Button } from 'react-bootstrap';
 import { get } from '../requests';
 
 
 export default function HomePage() {
+    const setErrorModal = useGlobal('errorModal')[1];
     const [data, setData] = useState({ item: null });
     const [query, setQuery] = useState(8863);
 
@@ -19,8 +21,12 @@ export default function HomePage() {
         fetchData();
     }, [query]);
 
-    function onInputChange(event: React.FormEvent<HTMLInputElement>) {
+    function handleInputChange(event: React.FormEvent<HTMLInputElement>) {
         setQuery(event.target.value);
+    }
+
+    function handleShowErrorModal() {
+        setErrorModal({show: true, message: 'triggered modal'});
     }
 
     return (
@@ -28,9 +34,10 @@ export default function HomePage() {
             <h2>Home Page</h2>
             <h4>Response</h4>
             <div style={{width: "200px", margin: "auto"}}>
-                <Form.Control type="number" value={query} onChange={onInputChange} />
+                <Form.Control type="number" value={query} onChange={handleInputChange} />
             </div>
             <div>{JSON.stringify(data)}</div>
+            <Button onClick={handleShowErrorModal}>show error modal</Button>
         </div>
     );
 }

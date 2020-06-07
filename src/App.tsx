@@ -1,10 +1,17 @@
 import React from 'react';
+import { setGlobal } from 'reactn';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import logo from './assets/logo.svg';
 import styles from './App.module.css';
+import ErrorModal from './components/ErrorModal';
 import HomePage from './pages/HomePage';
 import TestPage from './pages/TestPage';
+
+
+setGlobal({
+  errorModal: { show: false, message: '' }
+});
 
 
 const PAGES = [
@@ -54,6 +61,7 @@ function App() {
       <Router>
         {PAGES.map(getRoute)}
       </Router>
+      <ErrorModal />
     </div>
   );
 }
