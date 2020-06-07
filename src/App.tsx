@@ -14,7 +14,7 @@ const PAGES = [
 
 
 function getNavLink(page): JSX.Element {
-  return <Nav.Link href={page.href}>{page.title}</Nav.Link>;
+  return <Nav.Link key={page.href} href={page.href}>{page.title}</Nav.Link>;
 }
 
 
