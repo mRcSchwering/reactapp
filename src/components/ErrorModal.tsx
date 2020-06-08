@@ -11,7 +11,7 @@ export default function ErrorModal() {
     const handleClose = () => setErrorModal({show: false, message: ''});
 
     return (
-        <Modal show={errorModal.show} onHide={handleClose}>
+        <Modal show={errorModal.show} onHide={handleClose} animation={false}>
             <Modal.Header closeButton>
                 <Modal.Title>The Error Modal</Modal.Title>
             </Modal.Header>

@@ -1,25 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useGlobal } from 'reactn';
 import { Form, Button } from 'react-bootstrap';
-import { get } from '../requests';
-
+import useFetchHackerNewsData from '../hooks/useFetchHackerNewsData';
+ 
 
 export default function HomePage() {
     const setErrorModal = useGlobal('errorModal')[1];
-    const [data, setData] = useState({ item: null });
     const [query, setQuery] = useState(8863);
-
-    useEffect(() => {
-        async function fetchData() {
-            const resp = await get(`https://hacker-news.firebaseio.com/v0/item/${query}.json?print=pretty`);
-            if (resp.ok){
-                setData({item: await resp.json() });
-            } else {
-                setData({item: `Got ${resp.status} fetching data` });
-            }
-        }
-        fetchData();
-    }, [query]);
+    const data = useFetchHackerNewsData(query);
 
     function handleInputChange(event: React.FormEvent<HTMLInputElement>) {
         setQuery(event.target.value);
