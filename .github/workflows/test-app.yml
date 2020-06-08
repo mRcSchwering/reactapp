@@ -1,0 +1,25 @@
+name: Test React App
+
+on:
+  push:
+    branches:
+    - master
+
+jobs:
+
+  build-test:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: environment
+      run: pwd && ls -la && docker --version && docker-compose --version
+
+    - name: test
+      run: yarn test --all --watchAll=false
+
+    - name: build
+      run: yarn build
+
