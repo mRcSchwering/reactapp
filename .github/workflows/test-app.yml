@@ -17,6 +17,9 @@ jobs:
     - name: environment
       run: pwd && ls -la && docker --version && docker-compose --version
 
+    - name: install react-scripts
+      run: yarn install react-scripts
+
     - name: test
       run: yarn test --all --watchAll=false
 
