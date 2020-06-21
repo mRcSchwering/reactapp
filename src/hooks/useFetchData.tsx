@@ -21,6 +21,7 @@ type FetchDataType<T> = {
 
 /**
  * Fetch data by GET and return parsed data, error, loading
+ * reacts immediately on URL
  * @param url full URL to GET
  */
 export function useFetchData(url: string): FetchDataType<any> {
@@ -39,7 +40,7 @@ export function useFetchData(url: string): FetchDataType<any> {
       })
       .catch((err) => {
         console.error("Loading data failed: " + err);
-        setState((state) => ({ ...state, error: err }));
+        setState((state) => ({ ...state, error: err, loading: false }));
       });
   }, [url]);
 

@@ -5,6 +5,7 @@ import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
 import HomePage from "./pages/HomePage";
 import TestPage from "./pages/TestPage";
+import RequestsPage from "./pages/RequestsPage";
 import { ErrorModalContextProvider } from "./components/ErrorModalContext";
 
 type PageType = {
@@ -15,6 +16,7 @@ type PageType = {
 
 const PAGES: PageType[] = [
   { href: "/", component: HomePage, title: "Home" },
+  { href: "/requests", component: RequestsPage, title: "Requests" },
   { href: "/test", component: TestPage, title: "Test" },
 ];
 
@@ -64,7 +66,9 @@ function App() {
     <ErrorModalContextProvider>
       <div className={styles.App}>
         <Header />
-        <Router>{PAGES.map(getRoute)}</Router>
+        <div className={styles.AppBody}>
+          <Router>{PAGES.map(getRoute)}</Router>
+        </div>
       </div>
     </ErrorModalContextProvider>
   );
