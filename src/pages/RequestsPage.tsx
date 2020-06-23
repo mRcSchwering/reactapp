@@ -5,7 +5,25 @@ import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import styles from "./RequestsPage.module.css";
 
-const QUERY = gql`
+type RamCharacterDataType = {
+  character: {
+    name: string;
+    species: string;
+    type: string;
+    gender: string;
+    origin: {
+      name: string;
+      dimension: string;
+    };
+    status: string;
+  };
+};
+
+type RamCharacterVarsType = {
+  id: number;
+};
+
+const RAM_CHARACTER_QUERY = gql`
   query RamChars($id: ID!) {
     character(id: $id) {
       name
@@ -22,18 +40,9 @@ const QUERY = gql`
 `;
 
 function getResultElement(res: any): JSX.Element {
-  if (res.loading) {
-    return <>loading...</>;
-  } else if (res.error) {
-    return (
-      <>
-        error:
-        {JSON.stringify(res.error, null, 2)}
-      </>
-    );
-  } else {
-    return <>{JSON.stringify(res.data, null, 2)}</>;
-  }
+  if (res.loading) return <>loading...</>;
+  if (res.error) return <>error: {JSON.stringify(res.error, null, 2)} </>;
+  return <>{JSON.stringify(res.data, null, 2)}</>;
 }
 
 export default function RequestsPage() {
@@ -42,7 +51,10 @@ export default function RequestsPage() {
 
   const [ramId, setRamId] = React.useState(1);
   const [queryRamId, setQueryRamId] = React.useState(ramId);
-  const ram = useQuery(QUERY, { variables: { id: queryRamId } });
+  const ram = useQuery<RamCharacterDataType, RamCharacterVarsType>(
+    RAM_CHARACTER_QUERY,
+    { variables: { id: queryRamId } }
+  );
 
   function handleButtonClick() {
     setQueryRamId(ramId);

@@ -42,5 +42,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "apollo": "^2.21.2",
+    "jest-fetch-mock": "^3.0.1"
   }
 }
