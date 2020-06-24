@@ -17,16 +17,12 @@ export function timeout(s: number, promise: Promise<any>): Promise<any> {
  * @param url URL
  * @param seconds timeout in seconds
  */
-export async function get(url: string, seconds: number = 1): Promise<Response> {
-  try {
-    const resp = await timeout(
-      seconds,
-      fetch(url, {
-        method: "GET",
-        mode: "cors", // no-cors, cors, *same-origin
-      })
-    );
-    return resp;
-  } finally {
-  }
+export async function get(url: string, seconds: number = 1): Promise<any> {
+  return timeout(
+    seconds,
+    fetch(url, {
+      method: "GET",
+      mode: "cors", // no-cors, cors, *same-origin
+    })
+  ).then((response) => response.json());
 }

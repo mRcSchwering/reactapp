@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`shows data fragment 1`] = `
+<React.Fragment>
+  {
+  "a": [
+    1,
+    2
+  ]
+}
+</React.Fragment>
+`;
+
+exports[`shows error fragment 1`] = `
+<React.Fragment>
+  error: 
+  "test error"
+   
+</React.Fragment>
+`;
+
+exports[`shows loading fragment 1`] = `
+<React.Fragment>
+  loading...
+</React.Fragment>
+`;

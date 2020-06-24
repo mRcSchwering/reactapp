@@ -13,7 +13,7 @@ type HackerNewsDataType = {
   score?: number;
 };
 
-type FetchDataType<T> = {
+export type FetchDataType<T> = {
   data: null | T;
   error: null | string;
   loading: boolean;
@@ -34,7 +34,6 @@ export function useFetchData(url: string): FetchDataType<any> {
   React.useEffect(() => {
     setState((state) => ({ ...state, loading: true }));
     get(url)
-      .then((response) => response.json())
       .then((json) => {
         setState((state) => ({ ...state, data: json, loading: false }));
       })
