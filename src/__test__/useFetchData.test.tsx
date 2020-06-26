@@ -1,25 +1,48 @@
 import React from "react";
-import { render, act } from "@testing-library/react";
+import { render, screen, act } from "@testing-library/react";
 import { useFetchData } from "../hooks/useFetchData";
 
 jest.mock("../requests", () => ({
-  get: () => Promise.resolve({ a: [1, 2] }),
+  get: (url) => {
+    if (url === "init") return new Promise(() => {});
+    if (url === "resolve") return Promise.resolve("mydata");
+    if (url === "error") return Promise.reject(42);
+  },
 }));
 
-// TODO: this doesnt work, need testing component for hook
-function setup(): any {
-  const returnVal = {};
-  function TestComponent() {
-    Object.assign(returnVal, useFetchData("aUrl"));
+function testHook(callback) {
+  const TestHook = ({ callback }) => {
+    callback();
     return null;
-  }
-  render(<TestComponent />);
-  return returnVal;
+  };
+  render(<TestHook callback={callback} />);
 }
 
-it("asd", () => {
-  act(() => {
-    const { data } = setup();
-    expect(data).toEqual({ a: [1, 2] });
+it("has loading, data, and error states", async () => {
+  let resp: any = { loading: null, error: null, data: null };
+
+  testHook(() => {
+    resp = useFetchData("init");
   });
+  expect(resp.loading).toBe(true);
+  expect(resp.error).toBe(null);
+  expect(resp.data).toBe(null);
+
+  await act(async () => {
+    testHook(() => {
+      resp = useFetchData("resolve");
+    });
+  });
+  expect(resp.loading).toBe(false);
+  expect(resp.error).toBe(null);
+  expect(resp.data).toBe("mydata");
+
+  await act(async () => {
+    testHook(() => {
+      resp = useFetchData("error");
+    });
+  });
+  expect(resp.loading).toBe(false);
+  expect(resp.error).toBe(42);
+  expect(resp.data).toBe(null);
 });

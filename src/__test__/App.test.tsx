@@ -15,7 +15,6 @@ it.each`
   ${"Requests"}
 `("renders navbar link $title", ({ title }) => {
   render(<App />);
-  console.log(title);
   const linkElement = screen.getByText(title);
   expect(linkElement).toBeInTheDocument();
 });

@@ -1,6 +1,6 @@
 import React from "react";
 import { Form, Button } from "react-bootstrap";
-import { useFetchHackerNewsData, FetchDataType } from "../hooks/useFetchData";
+import { useFetchHackerNewsData } from "../hooks/useFetchData";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 import styles from "./RequestsPage.module.css";
@@ -39,7 +39,7 @@ const RAM_CHARACTER_QUERY = gql`
   }
 `;
 
-export function getResultElement(res: FetchDataType<any>): JSX.Element {
+export function getResultElement(res: { loading; error?; data }): JSX.Element {
   if (res.loading) return <>loading...</>;
   if (res.error) return <>error: {JSON.stringify(res.error, null, 2)} </>;
   return <>{JSON.stringify(res.data, null, 2)}</>;

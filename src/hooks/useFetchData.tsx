@@ -13,7 +13,7 @@ type HackerNewsDataType = {
   score?: number;
 };
 
-export type FetchDataType<T> = {
+type FetchDataType<T> = {
   data: null | T;
   error: null | string;
   loading: boolean;
@@ -35,7 +35,11 @@ export function useFetchData(url: string): FetchDataType<any> {
     setState((state) => ({ ...state, loading: true }));
     get(url)
       .then((json) => {
-        setState((state) => ({ ...state, data: json, loading: false }));
+        setState({
+          data: json,
+          loading: false,
+          error: null,
+        });
       })
       .catch((err) => {
         console.error("Loading data failed: " + err);
