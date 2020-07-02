@@ -3,26 +3,23 @@ name: Test React App
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
-
   build-test:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
+      - uses: actions/checkout@v1
 
-    - name: environment
-      run: pwd && ls -la && docker --version && docker-compose --version
+      - name: environment
+        run: pwd && ls -la && docker --version && docker-compose --version
 
-    - name: install react-scripts
-      run: yarn add react-scripts
+      - name: install react-scripts
+        run: yarn add react-scripts
 
-    - name: test
-      run: yarn test --all --watchAll=false
+      - name: test
+        run: yarn test --all --watchAll=false
 
-    - name: build
-      run: yarn build
-
+      - name: build
+        run: yarn build
