@@ -5,6 +5,7 @@ import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
 import HomePage from "./pages/HomePage";
 import MapsPage from "./pages/MapsPage";
+import SearchbarPage from "./pages/SearchbarPage";
 import RequestsPage from "./pages/RequestsPage";
 import { ErrorModalContextProvider } from "./components/ErrorModalContext";
 
@@ -17,7 +18,8 @@ type PageType = {
 const PAGES: PageType[] = [
   { href: "/", component: HomePage, title: "Home" },
   { href: "/requests", component: RequestsPage, title: "Requests" },
-  { href: "/test", component: MapsPage, title: "Test" },
+  { href: "/maps", component: MapsPage, title: "Maps" },
+  { href: "/searchbar", component: SearchbarPage, title: "Searchbar" },
 ];
 
 function getNavLink(page: PageType): JSX.Element {

@@ -24,5 +24,8 @@ export async function get(url: string, seconds: number = 1): Promise<any> {
       method: "GET",
       mode: "cors", // no-cors, cors, *same-origin
     })
-  ).then((response) => response.json());
+  ).then((response) => {
+    console.log(response);
+    return response.json();
+  });
 }
