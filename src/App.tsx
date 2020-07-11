@@ -4,7 +4,7 @@ import { Navbar, Nav } from "react-bootstrap";
 import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
 import HomePage from "./pages/HomePage";
-import TestPage from "./pages/TestPage";
+import MapsPage from "./pages/MapsPage";
 import RequestsPage from "./pages/RequestsPage";
 import { ErrorModalContextProvider } from "./components/ErrorModalContext";
 
@@ -17,7 +17,7 @@ type PageType = {
 const PAGES: PageType[] = [
   { href: "/", component: HomePage, title: "Home" },
   { href: "/requests", component: RequestsPage, title: "Requests" },
-  { href: "/test", component: TestPage, title: "Test" },
+  { href: "/test", component: MapsPage, title: "Test" },
 ];
 
 function getNavLink(page: PageType): JSX.Element {
