@@ -6,6 +6,8 @@ type FetchDataType<T> = {
   loading: boolean;
 };
 
+export type FetchDummyDataType = FetchDataType<string[]>;
+
 /**
  * Async sleep in milli seconds
  */
@@ -18,12 +20,7 @@ function sleep(ms: number): Promise<NodeJS.Timeout> {
  * data, error, loading - where data is a list of string
  * reports and error is the keyword string is greater 10
  */
-export function useDummyFetch(keyword: string): FetchDataType<string[]> {
-  /**
-   * TODO: trying to use firstRender to avoid initial fetch, but the ref is not persisted
-   * supposed to work like this: https://stackoverflow.com/questions/53179075/with-useeffect-how-can-i-skip-applying-an-effect-upon-the-initial-render
-   * I should make a minimal example
-   */
+export function useDummyFetch(keyword: string): FetchDummyDataType {
   const firstRender = React.useRef(true);
   const [state, setState] = React.useState({
     data: null as null | string[],
@@ -32,11 +29,9 @@ export function useDummyFetch(keyword: string): FetchDataType<string[]> {
   });
 
   React.useEffect(() => {
-    if (firstRender) {
-      console.log("first render");
+    if (firstRender.current) {
       firstRender.current = false;
     } else {
-      console.log("at least second render");
       setState((state) => ({ ...state, loading: true }));
       sleep(1000).then(() => {
         if (keyword.length <= 10) {

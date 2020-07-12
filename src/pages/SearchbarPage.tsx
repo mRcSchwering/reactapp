@@ -1,47 +1,93 @@
 import React from "react";
-import { useDummyFetch } from "../hooks/useDummyFetch";
+import Autocomplete from "react-autocomplete";
+import { useDummyFetch, FetchDummyDataType } from "../hooks/useDummyFetch";
 
-export function getResultElement(res: { loading; error?; data }): JSX.Element {
-  if (res.loading) return <>loading...</>;
-  if (res.error) return <>error: {JSON.stringify(res.error, null, 2)} </>;
-  return <>{JSON.stringify(res.data, null, 2)}</>;
+type AutocompleteItemType = {
+  label: string;
+};
+
+export function getCustomSuggestions(res: FetchDummyDataType): JSX.Element[] {
+  if (res.error)
+    return [<div>error: {JSON.stringify(res.error, null, 2)} </div>];
+  if (res.data === null) return [];
+  return res.data.map((d, i) => <div key={i}>{d}</div>);
 }
 
-/**
- * TODO: cant avoid first render, see use DummyFetch
- */
-export default function SearchbarPage() {
-  console.log("search page");
-  const [value, setValue] = React.useState("");
-  const [search, setSearch] = React.useState("");
-  const apiState = useDummyFetch(search);
+function getAutocompleteItems(res: FetchDummyDataType): AutocompleteItemType[] {
+  if (res.data === null) return [];
+  return res.data.map((d) => ({ label: d }));
+}
 
-  function handleInputChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(e.target.value);
+function renderAutocompleteItems(
+  item: AutocompleteItemType,
+  isHighlighted: boolean
+): JSX.Element {
+  return (
+    <div
+      key={item.label}
+      style={{ background: isHighlighted ? "lightgray" : "white" }}
+    >
+      {item.label}
+    </div>
+  );
+}
+
+function reduceSearchValue(val: string): string {
+  if (val.length < 3) return "";
+  return val;
+}
+
+export default function SearchbarPage() {
+  const [customValue, setCustomValue] = React.useState("");
+  const customResp = useDummyFetch(reduceSearchValue(customValue));
+
+  const [autocompleteValue, setAutocompleteValue] = React.useState("");
+  const autocompleteResp = useDummyFetch(reduceSearchValue(autocompleteValue));
+
+  function handleCustomChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setCustomValue(e.target.value);
   }
 
-  React.useEffect(() => {
-    if (value.length >= 3) {
-      setSearch(value);
-    }
-  }, [value]);
+  function handleAutocompleteChange(e: React.ChangeEvent<HTMLInputElement>) {
+    setAutocompleteValue(e.target.value);
+  }
+
+  function handleAutocompleteSelect(val: string) {
+    setAutocompleteValue(val);
+  }
 
   return (
     <div>
       <h2>Searchbar Page</h2>
-      <h4>Searching random APIs</h4>
+      <p>Searching random APIs</p>
+      <h4>React Autocomplete</h4>
+      <p>
+        Looks nice and easy to use, but introduces some warnings about
+        componentWillMount
+      </p>
+      <Autocomplete
+        getItemValue={(item) => item.label}
+        items={getAutocompleteItems(autocompleteResp)}
+        renderItem={renderAutocompleteItems}
+        value={autocompleteValue}
+        onChange={handleAutocompleteChange}
+        onSelect={handleAutocompleteSelect}
+        inputProps={{ placeholder: "Enter something..." }}
+      />
+      <h4>Custom Searchbar</h4>
+      <p>
+        Implementation from scratch, probably takes a while to get everything
+        right
+      </p>
       <form>
         <input
           type="text"
           placeholder="Enter something..."
-          onChange={handleInputChange}
-          value={value}
+          onChange={handleCustomChange}
+          value={customValue}
         />
+        {getCustomSuggestions(customResp)}
       </form>
-      <h4>Results</h4>
-      <div>
-        <pre>{getResultElement(apiState)}</pre>
-      </div>
     </div>
   );
 }
