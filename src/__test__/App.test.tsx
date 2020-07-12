@@ -11,8 +11,9 @@ it("renders without crashing", () => {
 it.each`
   title
   ${"Home"}
-  ${"Test"}
+  ${"Maps"}
   ${"Requests"}
+  ${"Searchbar"}
 `("renders navbar link $title", ({ title }) => {
   render(<App />);
   const linkElement = screen.getByText(title);
