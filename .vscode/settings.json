@@ -1,12 +1,16 @@
 // Place your settings in this file to overwrite default and user settings.
 {
   // When opening a file, `editor.tabSize` and `editor.insertSpaces` will be detected based on the file contents.
-  "editor.detectIndentation": false,
+  "editor.detectIndentation": true,
   "typescript.tsdk": "./node_modules/typescript/lib",
   "editor.fontLigatures": false,
   "editor.parameterHints.enabled": false,
-  "editor.formatOnSave": true,
-  "xeditor.formatOnSaveTimeout": 5000,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "html.autoClosingTags": false,
-  "liveServer.settings.port": 5501
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/node_modules/*/**": true
+  },
+  "editor.formatOnSave": true
 }
