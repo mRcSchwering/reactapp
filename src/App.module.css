@@ -7,6 +7,6 @@
   pointer-events: none;
 }
 
-.AppHeader {
-  min-height: 8vh;
+.NavBar {
+  height: 50px;
 }
