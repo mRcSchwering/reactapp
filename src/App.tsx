@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
-import HomePage from "./pages/HomePage";
-import MapsPage from "./pages/MapsPage";
-import SearchbarPage from "./pages/SearchbarPage";
-import RequestsPage from "./pages/RequestsPage";
-import TestTriggersPage from "./pages/TestTriggersPage";
 import { ErrorModalContextProvider } from "./components/ErrorModalContext";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import SellPage from "./pages/SellPage";
+import BrowsePage from "./pages/BrowsePage";
+import HomePage from "./pages/HomePage";
 
 /**
  * good search based website example RB -> have BrowserPage
@@ -41,54 +41,24 @@ import { ErrorModalContextProvider } from "./components/ErrorModalContext";
  * https://www.npmjs.com/package/@appbaseio/reactivesearch
  */
 
-type PageType = {
-  href: string;
-  title: string;
-  component: () => JSX.Element;
-};
-
-const PAGES: PageType[] = [
-  { href: "/", component: HomePage, title: "Home" },
-  { href: "/requests", component: RequestsPage, title: "Requests" },
-  { href: "/maps", component: MapsPage, title: "Maps" },
-  { href: "/searchbar", component: SearchbarPage, title: "Searchbar" },
-  {
-    href: "/testtriggers",
-    component: TestTriggersPage,
-    title: "Test Triggers",
-  },
-];
-
-function getNavLink(page: PageType): JSX.Element {
-  return (
-    <Nav.Link key={page.href} href={page.href}>
-      {page.title}
-    </Nav.Link>
-  );
-}
-
-function getRoute(page: PageType): JSX.Element {
-  if (page.href === "/") {
-    return (
-      <Route
-        key={page.href}
-        path={page.href}
-        exact
-        component={page.component}
-      />
-    );
-  } else {
-    return (
-      <Route key={page.href} path={page.href} component={page.component} />
-    );
-  }
-}
-
-function Header() {
+function HeaderPanel() {
   return (
     <header>
       <Navbar bg="dark" variant="dark" expand="sm" className={styles.NavBar}>
-        <Nav className="ml-auto">{PAGES.map(getNavLink)}</Nav>
+        <a href="/">
+          <img src={logo} className={styles.AppLogo} alt="logo" />
+        </a>
+        <Nav className="ml-auto">
+          <Nav.Link key="sell" href="/sell">
+            sell
+          </Nav.Link>
+          <Nav.Link key="login" href="/login">
+            login
+          </Nav.Link>
+          <Nav.Link key="signup" href="/signup">
+            signup
+          </Nav.Link>
+        </Nav>
       </Navbar>
     </header>
   );
@@ -98,9 +68,15 @@ function App() {
   return (
     <ErrorModalContextProvider>
       <div className={styles.App}>
-        <Header />
+        <HeaderPanel />
         <div className={styles.AppBody}>
-          <Router>{PAGES.map(getRoute)}</Router>
+          <Router>
+            <Route key="home" path="/" exact component={HomePage} />
+            <Route key="browse" path="/browse" component={BrowsePage} />
+            <Route key="login" path="/login" exact component={LoginPage} />
+            <Route key="signup" path="/signup" exact component={SignupPage} />
+            <Route key="sell" path="/sell" exact component={SellPage} />
+          </Router>
         </div>
       </div>
     </ErrorModalContextProvider>
@@ -108,5 +84,3 @@ function App() {
 }
 
 export default App;
-
-// <img src={logo} className={styles.AppLogo} alt="logo" />
