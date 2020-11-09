@@ -1,5 +1,11 @@
 import React from "react";
+import SearchPanel from "../components/SearchPanel";
 
 export default function HomePage() {
-  return <h2>Home Page</h2>;
+  return (
+    <div>
+      <h2>Home Page</h2>
+      <SearchPanel />
+    </div>
+  );
 }

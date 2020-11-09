@@ -1,9 +1,8 @@
 import React from "react";
-import styles from "./BrowsePage.module.css";
-import { useLocation, useHistory } from "react-router-dom";
-import { Form } from "react-bootstrap";
+import { useLocation } from "react-router-dom";
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
+import SearchPanel from "../components/SearchPanel";
 
 function useQueryStringParams() {
   return new URLSearchParams(useLocation().search);
@@ -43,55 +42,10 @@ const RAM_CHARACTER_QUERY = gql`
   }
 `;
 
-function useSuggestedNames(search: string | null): string[] {
-  const query = gql`
-    query {
-      characters {
-        results {
-          name
-        }
-      }
-    }
-  `;
-  const res = useQuery(query);
-  if (res.data === null || search === null || search === "") {
-    return [];
-  }
-  return res.data.characters.results
-    .map((d) => d.name)
-    .filter((d: string) => d.toLowerCase().includes(search));
-}
-
 export function getResultElement(res: { loading; error?; data }): JSX.Element {
   if (res.loading) return <>loading...</>;
   if (res.error) return <>error: {JSON.stringify(res.error, null, 2)} </>;
   return <>{JSON.stringify(res.data, null, 2)}</>;
-}
-
-function SearchPanel() {
-  const history = useHistory();
-  const [input, setInput] = React.useState("");
-  const suggestedNames = useSuggestedNames(input);
-
-  function handleKeyDown(e: React.KeyboardEvent) {
-    if (e.key === "Enter") {
-      history.push(`/browse?search=${input}`);
-    }
-  }
-
-  return (
-    <div>
-      <div className={styles.SearchPanel}>
-        <div>The search panel</div>
-        <Form.Control
-          value={input}
-          onChange={(e) => setInput(e.currentTarget.value)}
-          onKeyDown={handleKeyDown}
-        />
-      </div>
-      <div>{suggestedNames.join(", ")}</div>
-    </div>
-  );
 }
 
 export default function BrowsePage(): JSX.Element {
@@ -106,11 +60,12 @@ export default function BrowsePage(): JSX.Element {
   return (
     <div>
       <SearchPanel />
+      <h2>Browse Page</h2>
+      <p>Searched: {search}</p>
+      <h4>Result</h4>
       <div style={{ width: 800, marginLeft: 200 }}>
         <pre style={{ textAlign: "left" }}>{getResultElement(ram)}</pre>
       </div>
-      <h2>Browse Page</h2>
-      <p>Searched: {search}</p>
     </div>
   );
 }
