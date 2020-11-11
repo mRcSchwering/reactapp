@@ -1,0 +1,51 @@
+div.SearchBar {
+  z-index: 100;
+  height: 80px;
+  background-color: rgb(255, 255, 255);
+  padding: 5px;
+  padding-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+div.SearchInputContainer {
+  z-index: 100;
+  border: 2px solid;
+  border-radius: 8px;
+  max-width: 977px;
+  height: 3em;
+  padding-left: 1em;
+  display: flex;
+  align-items: center;
+  background-color: rgb(236, 236, 236);
+}
+
+input.SearchInput {
+  z-index: 100;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  line-height: 1.5em;
+  padding-right: 0;
+  width: 80vw;
+}
+
+div.curtain {
+  z-index: 10;
+  opacity: 0.5;
+  background: #000;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+}
+
+div.SuggestionsContainer {
+  position: relative;
+  display: inline-block;
+  width: 80vw;
+  max-width: 977px;
+}

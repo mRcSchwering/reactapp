@@ -1,9 +1,10 @@
 import React from "react";
 import styles from "./SearchPanel.module.css";
 import { useHistory, useLocation } from "react-router-dom";
-import { Nav } from "react-bootstrap";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
+import SearchBar from "./SearchBar";
+import { isTemplateSpan } from "typescript";
 
 const CHARACTER_NAMES_QUERY = gql`
   query {
@@ -16,31 +17,16 @@ const CHARACTER_NAMES_QUERY = gql`
   }
 `;
 
-type SuggestionsProps = {
-  input: string;
-  focus: boolean;
-};
-
-type SearchBarProps = {
-  input: string;
-  focus: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onKeyDown: (e: React.KeyboardEvent) => void;
-  onFocus: () => void;
-  onBlur: () => void;
-};
-
 function useQueryStringParams() {
   return new URLSearchParams(useLocation().search);
 }
 
 function useSuggestedNames(
-  search: string | null,
-  focus: boolean
+  search: string | null
 ): { name: string; id: number }[] {
   const res = useQuery(CHARACTER_NAMES_QUERY);
 
-  if (!focus || res.data === null || search === null || search.length === 0) {
+  if (!res.data || !search || search.length === 0) {
     return [];
   }
 
@@ -49,34 +35,21 @@ function useSuggestedNames(
     .filter((d) => d.name.toLowerCase().includes(search.toLowerCase()));
 }
 
-function Suggestions(props: SuggestionsProps): JSX.Element | null {
-  const names = useSuggestedNames(props.input, props.focus);
+function GenericSuggestions(): JSX.Element {
+  return (
+    <div className={styles.GenericSuggestions}>Some Generic suggestions</div>
+  );
+}
+
+function SpecificSuggestions(props: { items: any[] }): JSX.Element | null {
   const history = useHistory();
-
-  if (!props.focus) {
-    return null;
-  }
-
-  if (props.input.length < 1) {
-    return (
-      <div className={styles.SuggestionsContainer}>
-        <div className={styles.GenericSuggestions}>
-          Some Generic suggestions
-        </div>
-      </div>
-    );
-  }
-
-  if (names.length < 1) {
-    return null;
-  }
 
   function handleSuggestionClick(e: React.MouseEvent<HTMLDivElement>) {
     const selection: string = e.target["textContent"];
     history.push(`/browse?search=${selection}`);
   }
 
-  const suggestionDivs = names.map((d) => (
+  const divs = props.items.map((d) => (
     <div
       className={styles.SuggestionItem}
       key={d.id}
@@ -86,43 +59,16 @@ function Suggestions(props: SuggestionsProps): JSX.Element | null {
     </div>
   ));
 
-  return (
-    <div className={styles.SuggestionsContainer}>
-      <div className={styles.Suggestions}>{suggestionDivs}</div>
-    </div>
-  );
-}
-
-function SearchBar(props: SearchBarProps) {
-  const searchBarStyle = props.focus
-    ? { borderColor: "rgb(142, 158, 142)" }
-    : { borderColor: "transparent" };
-
-  return (
-    <div
-      style={searchBarStyle}
-      className={styles.SearchBar}
-      onFocus={props.onFocus}
-      onBlur={props.onBlur}
-    >
-      <input
-        value={props.input}
-        onChange={props.onChange}
-        onKeyDown={props.onKeyDown}
-        className={styles.SearchInput}
-      />
-    </div>
+  return divs.length < 1 ? null : (
+    <div className={styles.Suggestions}>{divs}</div>
   );
 }
 
 export default function SearchPanel(): JSX.Element {
   const history = useHistory();
   const search = useQueryStringParams().get("search");
-
   const [input, setInput] = React.useState(search ? search : "");
-  const [inFocus, setInFocus] = React.useState(false);
-
-  const curtain = inFocus ? <div className={styles.curtain}></div> : null;
+  const suggestedNames = useSuggestedNames(input);
 
   React.useEffect(() => {
     setInput(search ? search : "");
@@ -132,26 +78,19 @@ export default function SearchPanel(): JSX.Element {
     setInput(e.target.value);
   }
 
-  function handleKeyDown(e: React.KeyboardEvent) {
-    setInFocus(true);
-    if (e.key === "Enter") {
-      history.push(`/browse?search=${input}`);
-      setInFocus(false);
-    }
+  function handleTriggerSearch(input: string) {
+    history.push(`/browse?search=${input}`);
   }
 
   return (
-    <div className={styles.SearchBarContainer}>
+    <div>
       <SearchBar
         input={input}
-        focus={inFocus}
         onChange={handleChange}
-        onKeyDown={handleKeyDown}
-        onFocus={() => setInFocus(true)}
-        onBlur={() => setInFocus(false)}
+        onTriggerSearch={handleTriggerSearch}
+        GenericSuggestions={<GenericSuggestions />}
+        SpecificSuggestions={<SpecificSuggestions items={suggestedNames} />}
       />
-      {curtain}
-      <Suggestions input={input} focus={inFocus} />
     </div>
   );
 }
