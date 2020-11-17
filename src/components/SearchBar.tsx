@@ -67,6 +67,14 @@ export type SearchBarProps = {
   SpecificSuggestions?: JSX.Element | null;
 };
 
+/**
+ * Search bar with autosuggest features
+ * @param props.input current search text
+ * @param props.onChange callback of HTMLInputElement
+ * @param props.onTriggerSearch callback of search trigger, takes input
+ * @param props.GenericSuggestions JSX to be shown when search bar in focus but no input
+ * @param props.SpecificSuggestions JSX to be shown when search bar in focus with some input
+ */
 export default function SearchBar(props: SearchBarProps) {
   const [inFocus, setInFocus] = React.useState(false);
 

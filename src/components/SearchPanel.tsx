@@ -4,7 +4,6 @@ import { useHistory, useLocation } from "react-router-dom";
 import { useQuery } from "@apollo/react-hooks";
 import { gql } from "apollo-boost";
 import SearchBar from "./SearchBar";
-import { isTemplateSpan } from "typescript";
 
 const CHARACTER_NAMES_QUERY = gql`
   query {
