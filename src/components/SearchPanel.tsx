@@ -1,29 +1,12 @@
 import React from "react";
-import styles from "./SearchPanel.module.css";
-import { useHistory, useLocation } from "react-router-dom";
-import { useQuery } from "@apollo/react-hooks";
-import { gql } from "apollo-boost";
+import { useHistory } from "react-router-dom";
+import { useAllCharacterNames } from "../hooks/rickMortyQueries";
+import useQueryStringParams from "../hooks/useQueryStringParams";
 import SearchBar from "./SearchBar";
+import styles from "./SearchPanel.module.css";
 
-const CHARACTER_NAMES_QUERY = gql`
-  query {
-    characters {
-      results {
-        name
-        id
-      }
-    }
-  }
-`;
-
-function useQueryStringParams() {
-  return new URLSearchParams(useLocation().search);
-}
-
-function useSuggestedNames(
-  search: string | null
-): { name: string; id: number }[] {
-  const res = useQuery(CHARACTER_NAMES_QUERY);
+function useSuggestedNames(search: string | null) {
+  const res = useAllCharacterNames();
 
   if (!res.data || !search || search.length === 0) {
     return [];

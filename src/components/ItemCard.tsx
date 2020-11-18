@@ -1,6 +1,11 @@
 import React from "react";
+import useEffectNoInit from "../hooks/useEffectNoInit";
 import styles from "./ItemCard.module.css";
 import ShoppingCartButton from "./ShoppingCartButton";
+import {
+  removeShoppingCartId,
+  addShoppingCartId,
+} from "../modules/localStorage";
 
 type ItemCardProps = {
   id: string;
@@ -13,17 +18,30 @@ type ItemCardProps = {
     dimension: string;
   };
   status: string;
+  isSelected: boolean;
 };
 
 export default function ItemCard(props: ItemCardProps): JSX.Element {
-  // TODO: ItemCard click should lead to details page
-  //       but shopping cart must still be clickable
-  function handleClick(e: React.MouseEvent<HTMLElement>) {
-    console.log(e.target["id"]);
+  const [isSelected, setIsSelected] = React.useState(props.isSelected);
+
+  function handleCardClick() {
+    console.log("Clicked on item", props.id);
   }
 
+  function handleShoppingCartClick() {
+    setIsSelected((prevState) => !prevState);
+  }
+
+  useEffectNoInit(() => {
+    if (isSelected) {
+      addShoppingCartId(props.id);
+    } else {
+      removeShoppingCartId(props.id);
+    }
+  }, [isSelected]);
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={handleCardClick}>
       <div className={styles.imagebox}>
         <img src={"https://picsum.photos/200/100"} />
       </div>
@@ -37,7 +55,11 @@ export default function ItemCard(props: ItemCardProps): JSX.Element {
         </div>
       </div>
       <div className={styles.cartbox}>
-        <ShoppingCartButton id={props.id} />
+        <ShoppingCartButton
+          id={props.id}
+          isSelected={isSelected}
+          onClick={handleShoppingCartClick}
+        />
       </div>
     </div>
   );

@@ -1,52 +1,9 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
-import { gql } from "apollo-boost";
-import { useQuery } from "@apollo/react-hooks";
+import useQueryStringParams from "../hooks/useQueryStringParams";
 import ItemCard from "../components/ItemCard";
 import SearchPanel from "../components/SearchPanel";
-
-// TODO: should be in a more global location
-function useQueryStringParams() {
-  return new URLSearchParams(useLocation().search);
-}
-
-type CharacterType = {
-  id: string;
-  name: string;
-  species: string;
-  type: string;
-  gender: string;
-  origin: {
-    name: string;
-    dimension: string;
-  };
-  status: string;
-};
-
-type CharactersDataType = {
-  characters: {
-    results: CharacterType[];
-  };
-};
-
-const CHARACTERS_QUERY = gql`
-  query Characters {
-    characters {
-      results {
-        id
-        name
-        species
-        type
-        gender
-        origin {
-          name
-          dimension
-        }
-        status
-      }
-    }
-  }
-`;
+import { getShoppingCartIds } from "../modules/localStorage";
+import { useAllCharacters } from "../hooks/rickMortyQueries";
 
 function Results(props: {
   query: {
@@ -56,6 +13,8 @@ function Results(props: {
   };
   search: string | null;
 }): JSX.Element {
+  const products = getShoppingCartIds();
+
   if (props.query.loading) return <div>loading...</div>;
   if (props.query.error)
     return <div>error: {JSON.stringify(props.query.error, null, 2)} </div>;
@@ -63,7 +22,9 @@ function Results(props: {
   const searchTerm = props.search ? props.search.toLowerCase() : "";
   const items = props.query.data.characters.results
     .filter((d) => d.name.toLowerCase().includes(searchTerm))
-    .map((d) => <ItemCard {...d} key={d.id} />);
+    .map((d) => (
+      <ItemCard {...d} key={d.id} isSelected={products.includes(d.id)} />
+    ));
 
   return (
     <div style={{ width: 800, marginLeft: "auto", marginRight: "auto" }}>
@@ -74,7 +35,7 @@ function Results(props: {
 
 export default function BrowsePage(): JSX.Element {
   const search = useQueryStringParams().get("search");
-  const query = useQuery<CharactersDataType>(CHARACTERS_QUERY);
+  const query = useAllCharacters();
 
   return (
     <div>

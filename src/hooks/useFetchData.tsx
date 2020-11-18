@@ -1,5 +1,5 @@
 import React from "react";
-import { get } from "../requests";
+import { get } from "../modules/requests";
 
 type HackerNewsDataType = {
   id: number;
