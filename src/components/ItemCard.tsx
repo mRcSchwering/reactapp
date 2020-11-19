@@ -6,18 +6,10 @@ import {
   removeShoppingCartId,
   addShoppingCartId,
 } from "../modules/localStorage";
+import { CharacterType } from "../hooks/rickMortyQueries";
 
 type ItemCardProps = {
-  id: string;
-  name: string;
-  species: string;
-  type: string;
-  gender: string;
-  origin: {
-    name: string;
-    dimension: string;
-  };
-  status: string;
+  item: CharacterType;
   isSelected: boolean;
 };
 
@@ -25,7 +17,7 @@ export default function ItemCard(props: ItemCardProps): JSX.Element {
   const [isSelected, setIsSelected] = React.useState(props.isSelected);
 
   function handleCardClick() {
-    console.log("Clicked on item", props.id);
+    console.log("Clicked on item", props.item.id);
   }
 
   function handleShoppingCartClick() {
@@ -34,29 +26,33 @@ export default function ItemCard(props: ItemCardProps): JSX.Element {
 
   useEffectNoInit(() => {
     if (isSelected) {
-      addShoppingCartId(props.id);
+      addShoppingCartId(props.item.id);
     } else {
-      removeShoppingCartId(props.id);
+      removeShoppingCartId(props.item.id);
     }
   }, [isSelected]);
 
   return (
     <div className={styles.container} onClick={handleCardClick}>
       <div className={styles.imagebox}>
-        <img src={"https://picsum.photos/200/100"} />
+        <img
+          src={props.item.image}
+          className={styles.avatar}
+          alt={props.item.name}
+        />
       </div>
       <div className={styles.textbox}>
-        <h2>{props.name}</h2>
+        <h2>{props.item.name}</h2>
         <div>
-          {props.species} ({props.gender})<br />
-          {props.type} Status: {props.status}
+          {props.item.species} ({props.item.gender})<br />
+          {props.item.type} Status: {props.item.status}
           <br />
-          Origin: {props.origin.name} {props.origin.dimension}
+          Origin: {props.item.origin.name} {props.item.origin.dimension}
         </div>
       </div>
       <div className={styles.cartbox}>
         <ShoppingCartButton
-          id={props.id}
+          id={props.item.id}
           isSelected={isSelected}
           onClick={handleShoppingCartClick}
         />

@@ -1,12 +1,13 @@
 import { gql } from "apollo-boost";
 import { useQuery } from "@apollo/react-hooks";
 
-type CharacterType = {
+export type CharacterType = {
   id: string;
   name: string;
   species: string;
   type: string;
   gender: string;
+  image: string;
   origin: {
     name: string;
     dimension: string;
@@ -14,7 +15,7 @@ type CharacterType = {
   status: string;
 };
 
-type CharactersDataType = {
+export type CharactersDataType = {
   characters: {
     results: CharacterType[];
   };
@@ -29,6 +30,7 @@ const CHARACTERS_QUERY = gql`
         species
         type
         gender
+        image
         origin {
           name
           dimension
@@ -46,7 +48,7 @@ export function useAllCharacters() {
   return useQuery<CharactersDataType>(CHARACTERS_QUERY);
 }
 
-type CharacterNamesDataType = {
+export type CharacterNamesDataType = {
   characters: {
     results: { name: string; id: number }[];
   };

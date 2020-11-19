@@ -23,7 +23,7 @@ function Results(props: {
   const items = props.query.data.characters.results
     .filter((d) => d.name.toLowerCase().includes(searchTerm))
     .map((d) => (
-      <ItemCard {...d} key={d.id} isSelected={products.includes(d.id)} />
+      <ItemCard item={d} key={d.id} isSelected={products.includes(d.id)} />
     ));
 
   return (

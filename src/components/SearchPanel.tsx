@@ -60,6 +60,10 @@ export default function SearchPanel(): JSX.Element {
     setInput(e.target.value);
   }
 
+  function handleClear() {
+    setInput("");
+  }
+
   function handleTriggerSearch(input: string) {
     history.push(`/browse?search=${input}`);
   }
@@ -70,6 +74,7 @@ export default function SearchPanel(): JSX.Element {
         input={input}
         onChange={handleChange}
         onTriggerSearch={handleTriggerSearch}
+        onClearInput={handleClear}
         GenericSuggestions={<GenericSuggestions />}
         SpecificSuggestions={<SpecificSuggestions items={suggestedNames} />}
       />

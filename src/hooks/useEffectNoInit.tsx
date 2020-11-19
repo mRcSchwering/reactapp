@@ -15,5 +15,5 @@ export default function useEffectNoInit(fn: () => void, deps: any[]) {
     } else {
       didMountRef.current = true;
     }
-  }, [deps]);
+  }, [deps, fn]);
 }

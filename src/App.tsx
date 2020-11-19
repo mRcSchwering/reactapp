@@ -1,6 +1,8 @@
 import React from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
 import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
 import { ErrorModalContextProvider } from "./components/ErrorModalContext";
@@ -10,36 +12,7 @@ import SellPage from "./pages/SellPage";
 import BrowsePage from "./pages/BrowsePage";
 import HomePage from "./pages/HomePage";
 
-/**
- * good search based website example RB -> have BrowserPage
- * https://www.redbubble.com/
- *
- * router with query str params -> searches in history
- * https://medium.com/better-programming/using-url-parameters-and-query-strings-with-react-router-fffdcea7a8e9
- *
- * Searchbar itself will be major feature:
- * - suggestions
- * - categorized into different topics
- * - maybe with tags in searchbar itself
- *
- * have category pages as subpage of BrowserPage
- * - entrypoint of each is like a category homepage
- * - search from there should only search within category
- * - should be reflected in search bar
- * - should be possible to remove that pre-selection
- *
- * filter if search was performed
- * - filter days old / creation date
- * - filter tags
- * - filter species
- * - filter distance
- * - filter price
- * - sort by price, distance, days old
- * - show results on map
- *
- * check if I can use this (actually for ES)
- * https://www.npmjs.com/package/@appbaseio/reactivesearch
- */
+library.add(faTimes, faSearch);
 
 function HeaderPanel() {
   return (
