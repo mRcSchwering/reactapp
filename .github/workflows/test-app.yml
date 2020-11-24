@@ -18,8 +18,11 @@ jobs:
       - name: install react-scripts
         run: yarn add react-scripts
 
-      #- name: test
-      #  run: echo "yarn test --all --watchAll=false"
+      - name: install dependencies
+        run: yarn
+
+      - name: test
+        run: echo "yarn test --all --watchAll=false"
 
       - name: build
         run: yarn build
