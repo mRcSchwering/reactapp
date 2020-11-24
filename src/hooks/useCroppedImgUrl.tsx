@@ -7,12 +7,12 @@ import { getCroppedImg } from "../modules/images";
  */
 export default function useCroppedImgUrl(
   img: HTMLImageElement
-): [string, (crop: any) => void] {
-  const [url, setUrl] = React.useState("");
+): [string | null, (crop: any) => void] {
+  const [url, setUrl] = React.useState<string | null>(null);
 
   async function setCroppedImgUrl(crop: any) {
     if (crop.width && crop.height) {
-      URL.revokeObjectURL(url);
+      if (url) URL.revokeObjectURL(url);
       const blob = await getCroppedImg(img, crop);
       setUrl(URL.createObjectURL(blob));
     }
