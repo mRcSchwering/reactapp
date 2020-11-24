@@ -1,26 +1,43 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`shows data fragment 1`] = `
-<React.Fragment>
-  {
-  "a": [
-    1,
-    2
-  ]
-}
-</React.Fragment>
+exports[`snapshot matches for selected ItemCard 1`] = `
+<ItemCard
+  isSelected={true}
+  item={
+    Object {
+      "gender": "a gender",
+      "id": "1",
+      "image": "some-image-url",
+      "name": "a name",
+      "origin": Object {
+        "dimension": "a origin dimension",
+        "name": "a origin name",
+      },
+      "species": "a species",
+      "status": "a status",
+      "type": "a type",
+    }
+  }
+/>
 `;
 
-exports[`shows error fragment 1`] = `
-<React.Fragment>
-  error: 
-  "test error"
-   
-</React.Fragment>
-`;
-
-exports[`shows loading fragment 1`] = `
-<React.Fragment>
-  loading...
-</React.Fragment>
+exports[`snapshot matches for unselected ItemCard 1`] = `
+<ItemCard
+  isSelected={false}
+  item={
+    Object {
+      "gender": "a gender",
+      "id": "1",
+      "image": "some-image-url",
+      "name": "a name",
+      "origin": Object {
+        "dimension": "a origin dimension",
+        "name": "a origin name",
+      },
+      "species": "a species",
+      "status": "a status",
+      "type": "a type",
+    }
+  }
+/>
 `;

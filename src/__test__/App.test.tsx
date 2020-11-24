@@ -3,18 +3,17 @@ import ReactDOM from "react-dom";
 import { render, screen } from "@testing-library/react";
 import App from "../App";
 
-it("renders without crashing", () => {
+test("App renders without crashing", () => {
   const div = document.createElement("div");
   ReactDOM.render(<App />, div);
 });
 
-it.each`
+test.each`
   title
-  ${"Home"}
-  ${"Maps"}
-  ${"Requests"}
-  ${"Searchbar"}
-`("renders navbar link $title", ({ title }) => {
+  ${"test"}
+  ${"upload"}
+  ${"login"}
+`("App renders navbar link $title", ({ title }) => {
   render(<App />);
   const linkElement = screen.getByText(title);
   expect(linkElement).toBeInTheDocument();

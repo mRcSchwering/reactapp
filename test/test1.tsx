@@ -4,12 +4,15 @@
  */
 import { Selector } from "testcafe";
 
-fixture`Getting Started with testcafe`.page`http://localhost:3000/`;
+fixture`Getting Started with testcafe`.page`http://localhost:5000/`;
 
-test("Error modal opens w/ button click", async (t) => {
-  const button = await Selector("button").withText("show error modal");
-  await t.click(button);
+test("Searchbar generic suggestions show", async (t) => {
+  const input = await Selector("input");
+  await t.click(input);
 
-  const modalTitle = await Selector("div.modal-title.h4");
-  await t.expect(modalTitle.innerText).eql("The Error Modal");
+  const suggestionsDiv = await Selector("div").withAttribute(
+    "class",
+    /SearchBar_SuggestionsContainer_.*/
+  );
+  await t.expect(suggestionsDiv.innerText).eql("Some Generic suggestions");
 });

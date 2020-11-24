@@ -1,19 +1,26 @@
-import { getResultElement } from "../pages/RequestsPage";
+import React from "react";
+import ItemCard from "../components/ItemCard";
 
-it("shows loading fragment", () => {
-  const data = { loading: true, error: null, data: null };
-  const res = getResultElement(data);
+const aCharacter = {
+  id: "1",
+  name: "a name",
+  species: "a species",
+  type: "a type",
+  gender: "a gender",
+  image: "some-image-url",
+  origin: {
+    name: "a origin name",
+    dimension: "a origin dimension",
+  },
+  status: "a status",
+};
+
+test("snapshot matches for selected ItemCard", () => {
+  const res = <ItemCard item={aCharacter} isSelected={true} />;
   expect(res).toMatchSnapshot();
 });
 
-it("shows error fragment", () => {
-  const data = { loading: false, error: "test error", data: null };
-  const res = getResultElement(data);
-  expect(res).toMatchSnapshot();
-});
-
-it("shows data fragment", () => {
-  const data = { loading: false, error: null, data: { a: [1, 2] } };
-  const res = getResultElement(data);
+test("snapshot matches for unselected ItemCard", () => {
+  const res = <ItemCard item={aCharacter} isSelected={false} />;
   expect(res).toMatchSnapshot();
 });

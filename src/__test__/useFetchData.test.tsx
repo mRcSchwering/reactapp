@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { useFetchData } from "../hooks/useFetchData";
 jest.useFakeTimers();
 
-jest.mock("../requests", () => ({
+jest.mock("../modules/requests", () => ({
   get: (url) => {
     if (url === "init") return new Promise(() => {});
     if (url === "data") return Promise.resolve("mydata");
@@ -36,7 +36,7 @@ function testHook(callback) {
 /**
  * Initial state with unresolved promise is "loading"
  */
-it("has an instant loading state", async () => {
+test("has an instant loading state", async () => {
   let resp: any = { loading: null, error: null, data: null };
 
   testHook(() => {
@@ -51,7 +51,7 @@ it("has an instant loading state", async () => {
  * The other states fulfill promise.
  * They need to be wrapped in async act().
  */
-it("has data and error states", async () => {
+test("has data and error states", async () => {
   let resp: any = { loading: null, error: null, data: null };
 
   await act(async () => {
@@ -78,7 +78,7 @@ it("has data and error states", async () => {
  * the switch from the initial "loading" state
  * to the "data" state
  */
-it("updates loading state with data state", async () => {
+test("updates loading state with data state", async () => {
   let resp: any = { loading: null, error: null, data: null };
 
   await act(async () => {
@@ -109,7 +109,7 @@ it("updates loading state with data state", async () => {
  * the switch from the initial "loading" state
  * to the "error" state
  */
-it("updates loading state with error state", async () => {
+test("updates loading state with error state", async () => {
   let resp: any = { loading: null, error: null, data: null };
 
   await act(async () => {
@@ -142,7 +142,7 @@ it("updates loading state with error state", async () => {
  * going into the "error" state, the hook did not set back error
  * to null when going into the "data" state.
  */
-it("switches from error state to data state", async () => {
+test("switches from error state to data state", async () => {
   let resp: any = { loading: null, error: null, data: null };
 
   const TestHook = () => {
