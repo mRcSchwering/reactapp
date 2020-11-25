@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Navbar, Nav } from "react-bootstrap";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faTimes, faSearch } from "@fortawesome/free-solid-svg-icons";
-import ApolloClient from "apollo-boost";
-import { ApolloProvider } from "@apollo/react-hooks";
+import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 
 import logo from "./assets/logo.svg";
 import styles from "./App.module.css";
@@ -17,6 +16,7 @@ import HomePage from "./pages/HomePage";
 
 const client = new ApolloClient({
   uri: "https://rickandmortyapi.com/graphql",
+  cache: new InMemoryCache(),
 });
 
 library.add(faTimes, faSearch);
