@@ -2,10 +2,11 @@ import React from "react";
 import { render, act, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { useFetchData } from "../hooks/useFetchData";
-jest.useFakeTimers();
+
+jest.useFakeTimers("modern");
 
 jest.mock("../modules/requests", () => ({
-  get: (url) => {
+  get: async (url) => {
     if (url === "init") return new Promise(() => {});
     if (url === "data") return Promise.resolve("mydata");
     if (url === "error") return Promise.reject(42);
@@ -95,7 +96,7 @@ test("updates loading state with data state", async () => {
   await act(async () => {
     testHook(() => {
       resp = useFetchData("dataAfter1s");
-      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(2000);
     });
   });
 
@@ -124,9 +125,9 @@ test("updates loading state with error state", async () => {
   expect(resp.data).toBe(null);
 
   await act(async () => {
-    testHook(() => {
+    testHook(async () => {
       resp = useFetchData("errorAfter1s");
-      jest.advanceTimersByTime(1000);
+      jest.advanceTimersByTime(2000);
     });
   });
 
